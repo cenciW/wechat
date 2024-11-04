@@ -13,6 +13,37 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  // FirebaseFirestore.instance.collection("mensagens").snapshots().listen((dado) {
+  //   dado.docs.forEach((d) {
+  //     print(d.data());
+  //   });
+  // });
+
+  FirebaseFirestore.instance
+      .collection("mensagens")
+      .doc("6Wa1ikg33DJObNjSYns4")
+      .snapshots()
+      .listen((dado) {
+    print(dado.data());
+  });
+
+  // //traz uma foto do banco de dados
+  // QuerySnapshot snapshot =
+  //     await FirebaseFirestore.instance.collection("mensagens").get();
+
+  // DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
+  //     .collection("mensagens")
+  //     .doc("qlUQAoxIVFKGPPuMU4RX")
+  //     .get();
+
+  // snapshot.docs.forEach((d) {
+  //   d.reference.update({"lido": false});
+  //   print(d.data());
+  //   print(d.id);
+  // });
+
+  // print(docSnapshot.data());
+
   // Depois de inicializar o Firebase, continue com o app
   runApp(MyApp());
 }
@@ -27,36 +58,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomeScreen(),
-    );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Firestore Example'),
-      ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () async {
-            // Obtenha a coleção 'teste' e adicione dados ao banco de dados
-            final CollectionReference users =
-                FirebaseFirestore.instance.collection('teste');
-
-            await users.add({
-              'full_name': 'Jane Doe',
-              'company': 'Stokes and Sons',
-              'age': 25,
-            });
-
-            print('Dados adicionados com sucesso');
-          },
-          child: Text('Adicionar dados ao Firestore'),
-        ),
-      ),
+      home: Container(),
     );
   }
 }
