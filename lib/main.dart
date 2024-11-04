@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:wechat/chat_screen.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -54,11 +55,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        iconTheme: IconThemeData(color: Colors.green),
       ),
-      home: Container(),
+      home: ChatScreen(),
     );
   }
 }
