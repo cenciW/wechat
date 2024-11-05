@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:wechat/text_composer.dart';
 
@@ -9,6 +10,12 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  void _sendMessage(String text) {
+    FirebaseFirestore.instance.collection("messages").add({
+      "text": text,
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,7 +23,7 @@ class _ChatScreenState extends State<ChatScreen> {
         title: const Text("Olá"),
         elevation: 0,
       ),
-      body: TextComposer(),
+      body: TextComposer(_sendMessage),
     );
   }
 }

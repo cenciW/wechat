@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class TextComposer extends StatefulWidget {
-  const TextComposer({super.key});
+  TextComposer(this.sendMessage, {super.key});
+
+  final Function(String) sendMessage;
 
   @override
   State<TextComposer> createState() => _TextComposerState();
@@ -9,6 +11,15 @@ class TextComposer extends StatefulWidget {
 
 class _TextComposerState extends State<TextComposer> {
   bool _isComposing = false;
+  final TextEditingController _messageController = TextEditingController();
+
+  void _reset() {
+    _messageController.clear();
+    setState(() {
+      _isComposing = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -16,24 +27,33 @@ class _TextComposerState extends State<TextComposer> {
       child: Row(
         children: [
           IconButton(
-            icon: Icon(Icons.photo_camera),
+            icon: const Icon(Icons.photo_camera),
             onPressed: () {},
           ),
           Expanded(
             child: TextField(
-              decoration:
-                  InputDecoration.collapsed(hintText: "Enviar uma mensagem"),
+              controller: _messageController,
+              decoration: const InputDecoration.collapsed(
+                  hintText: "Enviar uma mensagem"),
               onChanged: (text) {
                 setState(() {
                   _isComposing = text.isNotEmpty;
                 });
               },
-              onSubmitted: (text) {},
+              onSubmitted: (text) {
+                widget.sendMessage(text);
+                _reset();
+              },
             ),
           ),
           IconButton(
-            icon: Icon(Icons.send),
-            onPressed: _isComposing ? () {} : null,
+            icon: const Icon(Icons.send),
+            onPressed: _isComposing
+                ? () {
+                    widget.sendMessage(_messageController.text);
+                    _reset();
+                  }
+                : null,
           ),
         ],
       ),
