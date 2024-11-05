@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:wechat/text_composer.dart';
 
@@ -10,10 +13,31 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  void _sendMessage(String text) {
-    FirebaseFirestore.instance.collection("messages").add({
-      "text": text,
-    });
+  void _sendMessage({String? text, File? imgFile}) async {
+    Map<String, dynamic> data = {};
+
+    if (imgFile != null) {
+      UploadTask task = FirebaseStorage.instance
+          .ref()
+          .child(DateTime.now().millisecondsSinceEpoch.toString())
+          .putFile(imgFile);
+
+      TaskSnapshot taskSnapshot;
+      try {
+        taskSnapshot = await task;
+      } on FirebaseException catch (e) {
+        print('Error: ${e.message}');
+        return;
+      }
+      String url = await taskSnapshot.ref.getDownloadURL();
+      print(url);
+
+      data["imgUrl"] = url;
+    }
+
+    if (text != null) data["text"] = text;
+
+    FirebaseFirestore.instance.collection("messages").add(data);
   }
 
   @override
