@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:wechat/chat_message.dart';
 import 'package:wechat/text_composer.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -129,7 +130,9 @@ class _ChatScreenState extends State<ChatScreen> {
                         itemBuilder: (context, index) {
                           var data =
                               documents[index].data() as Map<String, dynamic>?;
-                          return ListTile(title: Text(data?["text"] ?? ''));
+                          return ChatMessage(
+                              documents[index].data() as Map<String, dynamic>,
+                              true);
                         },
                         reverse: true,
                         itemCount: documents.length,
